@@ -86,7 +86,7 @@ export const updateMemory = async (
   }
 };
 
-const searchMemory = async (searchQuery: string) => {
+export const searchMemory = async (searchQuery: string) => {
   try {
     const response = await axios.get<Memory[]>(
       `${SEARCH_API_URL}${searchQuery}`,

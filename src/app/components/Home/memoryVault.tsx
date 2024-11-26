@@ -7,6 +7,7 @@ import AddMemoryModal from "../Modals/addMemoryModal";
 import {
   deleteMemory,
   fetchAllMemories,
+  searchMemory,
   updateMemory,
   uploadMemory,
 } from "@/app/apiService/memory-apis";
@@ -106,18 +107,17 @@ function MemoryVaultUI() {
     }
   };
 
-  const handleSearch = (query: string) => {
+  const handleSearch = async (query: string) => {
     setSearchQuery(query);
     if (!query) {
-      loadMemories();
+      await loadMemories();
     } else {
-      const lowercasedQuery = query.toLowerCase();
-      const filtered = memories.filter(
-        (memory) =>
-          memory.location.toLowerCase().includes(lowercasedQuery) ||
-          memory.tags.toLowerCase().includes(lowercasedQuery)
-      );
-      setFilteredMemories(filtered);
+      try {
+        const searchResults = await searchMemory(query); // Use the search API
+        setFilteredMemories(searchResults);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
