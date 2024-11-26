@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Memory } from "@/app/types";
+import { Memory, SearchMemoryResponse } from "@/app/types";
 import { format } from "date-fns";
 
 const FETCH_MEMORIES_URL =
@@ -88,7 +88,7 @@ export const updateMemory = async (
 
 export const searchMemory = async (searchQuery: string) => {
   try {
-    const response = await axios.get<Memory[]>(
+    const response = await axios.get<SearchMemoryResponse>(
       `${SEARCH_API_URL}${searchQuery}`,
       {
         headers: {
@@ -96,7 +96,7 @@ export const searchMemory = async (searchQuery: string) => {
         },
       }
     );
-    return response.data;
+    return response.data.value;
   } catch (error) {
     console.error("Error searching memory:", error);
     throw error;

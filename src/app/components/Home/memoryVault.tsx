@@ -26,7 +26,6 @@ function MemoryVaultUI() {
     setSelectedMemory(memory);
   };
 
-  // Open modal to add memories
   const handleOpen = () => {
     setOpenModal(true);
   };
@@ -38,7 +37,7 @@ function MemoryVaultUI() {
   const loadMemories = async () => {
     try {
       const fetchedMemories = await fetchAllMemories();
-      setMemories(fetchedMemories);
+      setMemories(Array.isArray(fetchedMemories) ? fetchedMemories : []);
     } catch (error) {
       alert(`Failed to fetch memories: ${error}`);
     }
@@ -113,8 +112,8 @@ function MemoryVaultUI() {
       await loadMemories();
     } else {
       try {
-        const searchResults = await searchMemory(query); // Use the search API
-        setFilteredMemories(searchResults);
+        const searchResults = await searchMemory(query);
+        setFilteredMemories(searchResults || []);
       } catch (error) {
         console.error(error);
       }
@@ -155,7 +154,12 @@ function MemoryVaultUI() {
       </Grid2>
 
       <Grid2 container spacing={2} justifyContent="center" mx={4}>
-        {(searchQuery ? filteredMemories : memories).map((memory) => (
+        {(Array.isArray(searchQuery ? filteredMemories : memories)
+          ? searchQuery
+            ? filteredMemories
+            : memories
+          : []
+        ).map((memory) => (
           <MemoryCard
             key={memory.id}
             memory={memory}

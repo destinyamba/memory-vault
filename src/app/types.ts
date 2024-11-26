@@ -13,6 +13,11 @@ export interface Memory {
   updated_at: string;
 }
 
+export interface SearchMemoryResponse {
+  "@odata.context": string;
+  value: Memory[];
+}
+
 export interface MemoryCardProps {
   memory: Memory;
   onDelete: (memoryId: string) => void;
