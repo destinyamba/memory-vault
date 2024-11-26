@@ -10,6 +10,9 @@ const DELETE_MEMORY_URL =
   "https://prod-09.westus.logic.azure.com/workflows/7957ff40e8c14947ab9bc1f4fe731423/triggers/When_a_HTTP_request_is_received/paths/invoke/rest/v1/memory/";
 const UPDATE_MEMORY_URL =
   "https://prod-36.eastus.logic.azure.com/workflows/f8f09a6b5ab94c189009dbd5cd954af8/triggers/When_a_HTTP_request_is_received/paths/invoke/rest/v1/memory/";
+const SEARCH_API_KEY = "8ysNcZXbGdhgurHXozrzX80tMQaWI3wzqzKtbIZ4niAzSeAzwDN4";
+const SEARCH_API_URL =
+  "https://memory-vault-search-2.search.windows.net/indexes/cosmosdb-index/docs?api-version=2023-11-01&search=";
 
 export const getBlobStorageUrl = (filePath: string): string => {
   const storageAccountName = "memoryvaultblobstore";
@@ -79,6 +82,23 @@ export const updateMemory = async (
     );
   } catch (error) {
     console.error("Error deleting memory:", error);
+    throw error;
+  }
+};
+
+const searchMemory = async (searchQuery: string) => {
+  try {
+    const response = await axios.get<Memory[]>(
+      `${SEARCH_API_URL}${searchQuery}`,
+      {
+        headers: {
+          "api-key": SEARCH_API_KEY,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error searching memory:", error);
     throw error;
   }
 };

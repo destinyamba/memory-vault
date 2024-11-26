@@ -18,6 +18,8 @@ function MemoryVaultUI() {
   const [memories, setMemories] = useState<Memory[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [selectedMemory, setSelectedMemory] = useState<Memory | null>(null);
+  const [filteredMemories, setFilteredMemories] = useState<Memory[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleViewMemory = (memory: Memory) => {
     setSelectedMemory(memory);
@@ -104,6 +106,21 @@ function MemoryVaultUI() {
     }
   };
 
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    if (!query) {
+      loadMemories();
+    } else {
+      const lowercasedQuery = query.toLowerCase();
+      const filtered = memories.filter(
+        (memory) =>
+          memory.location.toLowerCase().includes(lowercasedQuery) ||
+          memory.tags.toLowerCase().includes(lowercasedQuery)
+      );
+      setFilteredMemories(filtered);
+    }
+  };
+
   return (
     <>
       <Grid2
@@ -133,18 +150,12 @@ function MemoryVaultUI() {
           onSubmit={handleUpload}
         />
       </Grid2>
-      <Grid2
-        container
-        size={6}
-        spacing={2}
-        alignItems="center"
-        justifyContent="center"
-      >
-        <SearchBar />
+      <Grid2 container spacing={2} alignItems="center" justifyContent="center">
+        <SearchBar onSearch={handleSearch} />
       </Grid2>
 
       <Grid2 container spacing={2} justifyContent="center" mx={4}>
-        {memories.map((memory) => (
+        {(searchQuery ? filteredMemories : memories).map((memory) => (
           <MemoryCard
             key={memory.id}
             memory={memory}
