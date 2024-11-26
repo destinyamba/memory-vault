@@ -12,6 +12,7 @@ import {
 } from "@/app/apiService/memory-apis";
 import MemoryCard from "../MemoryCard/memoryCard";
 import MemoryDetailModal from "../Modals/memoryDetailModal";
+import SearchBar from "../Search/SearchBar";
 
 function MemoryVaultUI() {
   const [memories, setMemories] = useState<Memory[]>([]);
@@ -36,7 +37,7 @@ function MemoryVaultUI() {
       const fetchedMemories = await fetchAllMemories();
       setMemories(fetchedMemories);
     } catch (error) {
-      alert("Failed to fetch memories");
+      alert(`Failed to fetch memories: ${error}`);
     }
   };
 
@@ -68,7 +69,7 @@ function MemoryVaultUI() {
       setOpenModal(false);
       loadMemories();
     } catch (error) {
-      alert("Failed to upload memory. Please try again.");
+      alert(`Failed to upload memory. Please try again: ${error}`);
     }
   };
 
@@ -77,7 +78,7 @@ function MemoryVaultUI() {
       await deleteMemory(memoryId);
       loadMemories();
     } catch (error) {
-      alert("Failed to delete memory");
+      alert(`Failed to delete memory: ${error}`);
     }
   };
 
@@ -131,6 +132,15 @@ function MemoryVaultUI() {
           onClose={() => setOpenModal(false)}
           onSubmit={handleUpload}
         />
+      </Grid2>
+      <Grid2
+        container
+        size={6}
+        spacing={2}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <SearchBar />
       </Grid2>
 
       <Grid2 container spacing={2} justifyContent="center" mx={4}>

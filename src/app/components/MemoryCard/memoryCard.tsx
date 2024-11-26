@@ -3,7 +3,7 @@ import {
   getBlobStorageUrl,
   parseTags,
 } from "@/app/apiService/memory-apis";
-import { Memory, MemoryCardProps } from "@/app/types";
+import { MemoryCardProps } from "@/app/types";
 import {
   Box,
   Card,
