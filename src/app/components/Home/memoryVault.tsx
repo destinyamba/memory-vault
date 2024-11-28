@@ -35,6 +35,7 @@ function MemoryVaultUI() {
   }, []);
 
   const loadMemories = async () => {
+    console.log("Welcome!");
     try {
       const fetchedMemories = await fetchAllMemories();
       setMemories(Array.isArray(fetchedMemories) ? fetchedMemories : []);
